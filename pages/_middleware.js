@@ -8,9 +8,8 @@ export async function middleware(req) {
       secret: process.env.JWT_SECRET,
       secureCookie: process.env.NODE_ENV === "production",
     });
-    // You could also check for any property on the session object,
-    // like role === "admin" or name === "John Doe", etc.
+    // like role === "admin" or name === "John Doe"...
     if (!session) return NextResponse.redirect("/home");
-    // If user is authenticated, continue.
+   
   }
 }
