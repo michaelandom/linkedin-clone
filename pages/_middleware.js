@@ -10,6 +10,5 @@ export async function middleware(req) {
     });
     // like role === "admin" or name === "John Doe"...
     if (!session) return NextResponse.redirect("/home");
-   
   }
 }
