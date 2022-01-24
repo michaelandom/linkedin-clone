@@ -5,6 +5,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { signOut, useSession } from "next-auth/react";
 function Sidebar() {
   const { data: session } = useSession();
+
   return (
     <div className='space-y-2 min-w-max max-w-lg '>
       {/* top */}
