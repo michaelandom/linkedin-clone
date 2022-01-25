@@ -5,8 +5,13 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 import Feed from '../components/Feed'
 import { useRouter } from 'next/router'
+import { AnimatePresence } from 'framer-motion'
+import Modal from '../components/Model'
+import { useRecoilState } from 'recoil'
+import { modalState, modalTypeState } from '../atoms/modalAtom'
 export default function Home() {
- 
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
+  const [modalType, setModalType] = useRecoilState(modalTypeState);
   const router=useRouter();
   const {status}=useSession({
     required:true,
@@ -40,6 +45,12 @@ export default function Home() {
         <div>
           {/* widget  */}
         </div>
+
+        <AnimatePresence>
+          {modalOpen && (
+            <Modal handleClose={() => setModalOpen(false)} type={modalType} />
+          )}
+        </AnimatePresence>
       </main>
       <button onClick={signOut}>signOut</button>
     </div>
