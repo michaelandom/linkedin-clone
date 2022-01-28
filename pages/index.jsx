@@ -9,7 +9,8 @@ import { AnimatePresence } from 'framer-motion'
 import Modal from '../components/Model'
 import { useRecoilState } from 'recoil'
 import { modalState, modalTypeState } from '../atoms/modalAtom'
-export default function Home() {
+import { connectToDatabase } from '../util/mongodb'
+export default function Home({posts}) {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [modalType, setModalType] = useRecoilState(modalTypeState);
   const router=useRouter();
@@ -39,7 +40,7 @@ export default function Home() {
           {/* side bar */}
           <Sidebar />
           {/* feed */}
-          <Feed />
+          <Feed posts={posts}/>
 
         </div>
         <div>
@@ -68,10 +69,22 @@ export async function getServerSideProps(context){
        },
      };
    }
+// get post 
+const {db}=await connectToDatabase();
+const posts=await db.collection("posts").find().sort({timestamp:-1}).toArray();
 
  return {
    props:{
      session,
+     posts:posts.map((post)=>({
+       _id:post._id.toString(),
+       input:post.input,
+       photoUrl:post.photoUrl,
+       username:post.username,
+       email:post.email,
+       userImg:post.userImg,
+       createdAt:post.createdAt,
+     }))
    }
  }
 }
