@@ -11,7 +11,7 @@ import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { modalState, modalTypeState } from "../atoms/modalAtom";
 import { useSession } from "next-auth/react";
-import TimeAgo from 'timeago-react';
+import TimeAgo from "timeago-react";
 function Post({ post, modalPost }) {
   const { data: session } = useSession();
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
@@ -22,7 +22,16 @@ function Post({ post, modalPost }) {
   const [handlePost, setHandlePost] = useRecoilState(handlePostState);
   const truncate = (string, n) =>
     string?.length > n ? string.substr(0, n - 1) + "...see more" : string;
-  const deletePost = () => {};
+  const deletePost = async () => {
+    console.log("delete function")
+    const response = await fetch(`/api/posts/${post._id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    setHandlePost(true);
+    setModalOpen(false);
+  };
 
   return (
     <div
